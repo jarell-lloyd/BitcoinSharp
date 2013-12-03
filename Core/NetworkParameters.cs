@@ -115,24 +115,24 @@ namespace BitCoinSharp
         /// <summary>
         /// Sets up the given NetworkParameters with testnet values.
         /// </summary>
-        private static NetworkParameters CreateTestNet(NetworkParameters n)
+        private static NetworkParameters CreateTestNet(NetworkParameters networkParameters)
         {
             // Genesis hash is 0000000224b1593e3ff16a0e3b61285bbc393a39f78c8aa48c456142671f7110
             // The proof of work limit has to start with 00, as otherwise the value will be interpreted as negative.
-            n.ProofOfWorkLimit = new BigInteger("0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16);
-            n.PacketMagic = 0xfabfb5da;
-            n.Port = 18333;
-            n.AddressHeader = 111;
-            n.DumpedPrivateKeyHeader = 239;
-            n.Interval = _interval;
-            n.TargetTimespan = _targetTimespan;
-            n.GenesisBlock = CreateGenesis(n);
-            n.GenesisBlock.TimeSeconds = 1296688602;
-            n.GenesisBlock.DifficultyTarget = 0x1d07fff8;
-            n.GenesisBlock.Nonce = 384568319;
-            var genesisHash = n.GenesisBlock.HashAsString;
+            networkParameters.ProofOfWorkLimit = new BigInteger("0000000fffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16);
+            networkParameters.Port = 18333;
+            networkParameters.PacketMagic = 0xfabfb5da;
+            networkParameters.AddressHeader = 111;
+            networkParameters.DumpedPrivateKeyHeader = 239;
+            networkParameters.Interval = _interval;
+            networkParameters.TargetTimespan = _targetTimespan;
+            networkParameters.GenesisBlock = CreateGenesis(networkParameters);
+            networkParameters.GenesisBlock.TimeSeconds = 1296688602;
+            networkParameters.GenesisBlock.DifficultyTarget = 0x1d07fff8;
+            networkParameters.GenesisBlock.Nonce = 384568319;
+            var genesisHash = networkParameters.GenesisBlock.HashAsString;
             Debug.Assert(genesisHash.Equals("00000007199508e34a9ff81e6ec0c477a4cccff2a4767a8eee39c11db367b008"), genesisHash);
-            return n;
+            return networkParameters;
         }
 
         /// <summary>
@@ -149,21 +149,24 @@ namespace BitCoinSharp
         /// </summary>
         public static NetworkParameters ProdNet()
         {
-            var n = new NetworkParameters();
-            n.ProofOfWorkLimit = new BigInteger("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16);
-            n.Port = 8333;
-            n.PacketMagic = 0xf9beb4d9;
-            n.AddressHeader = 0;
-            n.DumpedPrivateKeyHeader = 128;
-            n.Interval = _interval;
-            n.TargetTimespan = _targetTimespan;
-            n.GenesisBlock = CreateGenesis(n);
-            n.GenesisBlock.DifficultyTarget = 0x1d00ffff;
-            n.GenesisBlock.TimeSeconds = 1231006505;
-            n.GenesisBlock.Nonce = 2083236893;
-            var genesisHash = n.GenesisBlock.HashAsString;
+            var networkParameters = new NetworkParameters
+            {
+                ProofOfWorkLimit = new BigInteger("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16),
+                Port = 8333,
+                PacketMagic = 0xf9beb4d9,
+                AddressHeader = 0,
+                DumpedPrivateKeyHeader = 128,
+                Interval = _interval,
+                TargetTimespan = _targetTimespan
+            };
+            networkParameters.GenesisBlock = CreateGenesis(networkParameters);
+            networkParameters.GenesisBlock.DifficultyTarget = 0x1d00ffff;
+            networkParameters.GenesisBlock.TimeSeconds = 1231006505;
+            networkParameters.GenesisBlock.Nonce = 2083236893;
+            var genesisHash = networkParameters.GenesisBlock.HashAsString;
+            //TODO: If the genesis block must be created why don't we throw if it's invalid?
             Debug.Assert(genesisHash.Equals("000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"), genesisHash);
-            return n;
+            return networkParameters;
         }
 
         /// <summary>
