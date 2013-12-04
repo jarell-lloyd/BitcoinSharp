@@ -51,7 +51,8 @@ namespace BitCoinSharp
         private readonly BigInteger _priv;
         private readonly byte[] _pub;
 
-        [NonSerialized] private byte[] _pubKeyHash;
+        [NonSerialized] 
+        private byte[] _pubKeyHash;
 
         /// <summary>
         /// Generates an entirely new keypair.
